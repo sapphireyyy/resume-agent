@@ -1,0 +1,15 @@
+Name: Sarah Johnson
+Email: sarah.j@email.com
+Summary: Application Security Engineer with 4 years experience. Expert in secure coding practices, penetration testing, and security architecture. Strong Python and automation skills.
+
+Skills: Python, Bash, Burp Suite, Metasploit, OWASP ZAP, Docker, Kubernetes, AWS Security, SAST, DAST, SCA, WAF, Splunk, Git, Linux, CI/CD Security
+
+Experience:
+- Security Engineer @ SecureTech (2021-Present): Built automated security scanning pipeline integrated with CI/CD. Conducted security reviews for 50+ applications. Reduced vulnerability remediation time from 30 days to 3 days.
+- Security Analyst @ FinSecure (2019-2021): Performed penetration testing on banking applications. Developed security automation scripts in Python.
+
+Education: B.S. Cybersecurity, Purdue University (2019)
+
+Projects:
+- VulnScanner: Automated vulnerability assessment tool (600+ stars)
+- SecureCoding: Educational platform for secure coding practices

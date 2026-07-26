@@ -1,0 +1,1 @@
+Python FastAPI 搭建知识库后端，LangGraph 工作流编排。Milvus/Neo4j 混合检索，四路并行召回。Docker 编排 4 个数据库服务。MongoDB 会话管理。项目已上线，日活 100+。

@@ -1,0 +1,15 @@
+Name: Sophia Wang
+Email: sophia.wang@email.com
+Summary: Senior Frontend Engineer specializing in React ecosystem. 5 years building complex web applications. Expert in TypeScript, performance optimization, and design systems.
+
+Skills: TypeScript, JavaScript, React, Next.js, Vue.js, Redux, Zustand, TailwindCSS, Webpack, Vite, Jest, Cypress, Storybook, GraphQL, WebSocket, Node.js, Git, Docker, Nginx
+
+Experience:
+- Senior Frontend Engineer @ FinTech (2021-Present): Led frontend team building trading platform used by 100K+ users. Implemented micro-frontend architecture. Reduced bundle size by 60% through code splitting and lazy loading.
+- Frontend Developer @ WebAgency (2019-2021): Built responsive web applications for enterprise clients. Created reusable component library used across 10+ projects.
+
+Education: B.S. Computer Science, University of Washington (2019)
+
+Projects:
+- React Component Library: Open-source UI kit with 50+ components (2K stars)
+- PerfBuddy: Chrome extension for real-time React performance monitoring

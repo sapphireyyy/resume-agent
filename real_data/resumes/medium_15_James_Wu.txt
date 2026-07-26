@@ -1,0 +1,15 @@
+Name: James Wu
+Email: james.wu@email.com
+Summary: CS student graduating this year. Good academic foundation but limited practical experience. Completed two course projects in Python and Java.
+
+Skills: Python, Java, C++, SQL basics, Git, Linux commands, Data Structures, Algorithms
+
+Experience:
+- Intern @ University IT Dept (2023 Summer): Assisted with database maintenance. Wrote documentation for internal tools.
+
+Education: B.S. Computer Science, State University, expected 2024
+GPA: 3.6/4.0
+
+Projects:
+- Student Management System: CRUD app with Java Swing and MySQL
+- Tic-Tac-Toe AI: Python implementation with minimax algorithm

@@ -1,0 +1,15 @@
+Name: Kevin Liu
+Email: kevin.liu@email.com
+Summary: Senior QA Automation Engineer building test frameworks from scratch. Expert in Selenium, Playwright, and API testing. Strong Python skills for test automation.
+
+Skills: Python, Java, Selenium, Playwright, Cypress, Appium, JMeter, Postman, REST Assured, Jenkins, Docker, Git, JIRA, TestRail, Allure, SQL, Linux
+
+Experience:
+- Lead QA Engineer @ QualityFirst (2021-Present): Built test automation framework covering 1000+ test cases. Integrated automated testing into CI/CD pipeline. Reduced regression testing time from 2 weeks to 4 hours.
+- QA Engineer @ MobileApp (2019-2021): Automated mobile app testing with Appium. Built API testing suite with Python and requests.
+
+Education: B.S. Computer Science, UC Irvine (2019)
+
+Projects:
+- TestFusion: Open-source test framework combining UI and API testing
+- PerfTest: Distributed load testing tool built with Python and Locust

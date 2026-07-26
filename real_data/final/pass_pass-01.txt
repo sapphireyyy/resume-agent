@@ -1,0 +1,1 @@
+精通 Python，独立完成 2 个 FastAPI 后端项目。熟练使用 LangGraph 搭建多 Agent 系统，掌握 Docker 容器化部署。GitHub 持续维护开源项目。熟悉 MySQL 与 MongoDB，有数据库设计经验。

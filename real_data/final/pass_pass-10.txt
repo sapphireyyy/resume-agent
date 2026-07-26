@@ -1,0 +1,1 @@
+Python 熟练，FastAPI REST API 开发。自研 Agent 框架项目经验。熟悉 MySQL/MongoDB 数据库。Docker 日常开发使用。代码风格规范，有 Code Review 习惯。

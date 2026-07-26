@@ -1,0 +1,15 @@
+name: skill-match
+version: "1.0.0"
+description: 简历技能与 JD 要求逐项对比，支持 30+ 技术关键词匹配
+triggers:
+  keywords:
+    - 技能匹配
+    - 技术栈
+    - JD对比
+  intent_patterns:
+    - "match skills"
+    - "compare JD and resume"
+output:
+  score: 0.0 ~ 1.0
+  matched_skills: 命中的技能列表
+  missing_skills: JD要求但简历缺失的技能

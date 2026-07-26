@@ -1,0 +1,13 @@
+Name: Leo Martinez
+Email: leo.m@email.com
+Summary: Restaurant Chef with 12 years culinary experience. Expert in Italian and French cuisine. No technical skills beyond POS system usage.
+
+Skills: Cooking, Menu Planning, Kitchen Management, Food Safety, Inventory, Cost Control
+
+Experience:
+- Head Chef @ FineDining (2016-Present): Managed kitchen of 15 staff. Designed seasonal menus. Maintained food cost below 30%.
+
+Education: Culinary Arts Diploma, Cooking School (2010)
+
+Projects:
+

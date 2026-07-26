@@ -1,0 +1,13 @@
+Name: Bob Wilson
+Email: bob.wilson@email.com
+Summary: Sales Manager with 8 years in B2B sales. No programming experience. Looking for career change into tech but haven't started learning yet.
+
+Skills: Sales, CRM, Excel, PowerPoint, Negotiation, Team Management
+
+Experience:
+- Senior Sales Manager @ EnterpriseCorp (2018-Present): Led sales team of 15 people. Closed $5M+ in annual deals. Managed client relationships across Asia-Pacific.
+
+Education: B.A. Marketing, Business School (2015)
+
+Projects:
+

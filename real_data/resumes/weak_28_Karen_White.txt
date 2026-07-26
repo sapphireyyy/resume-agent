@@ -1,0 +1,13 @@
+Name: Karen White
+Email: karen.w@email.com
+Summary: Nurse with 7 years hospital experience. Licensed RN. Compassionate and detail-oriented. No coding experience but interested in health tech.
+
+Skills: Patient Care, Medical Records, CPR Certified, HIPAA Compliance, Team Communication
+
+Experience:
+- Registered Nurse @ CityHospital (2017-Present): Provided patient care in emergency department. Managed patient records and treatment plans.
+
+Education: B.S. Nursing, Medical University (2016)
+
+Projects:
+

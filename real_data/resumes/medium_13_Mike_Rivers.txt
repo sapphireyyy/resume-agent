@@ -1,0 +1,14 @@
+Name: Mike Rivers
+Email: mike.rivers@email.com
+Summary: Self-taught programmer with 6 months of Python experience. Passionate about AI and machine learning. Completed online courses but lacks professional experience.
+
+Skills: Python, NumPy, Pandas, basics of Scikit-learn, Jupyter, Git
+
+Experience:
+- Freelance Developer (2023-Present): Built small Python scripts for local businesses. Created data analysis reports with Pandas.
+
+Education: B.A. Economics, Community College (2022)
+
+Projects:
+- Stock Predictor: ML model predicting stock prices (course project)
+- Chat Bot: Simple Telegram bot using OpenAI API

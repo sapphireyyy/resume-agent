@@ -1,0 +1,15 @@
+name: github-enrich
+version: "1.0.0"
+description: 简历 GitHub 数据增强，提取用户名并获取仓库信息（stars/forks/语言），补充开源贡献信号
+triggers:
+  keywords:
+    - GitHub
+    - 开源
+    - 仓库
+    - stars
+  intent_patterns:
+    - "enrich with GitHub data"
+    - "get open source contributions"
+output:
+  repos: 仓库列表（名称/stars/forks/语言/描述）
+  repo_count: 获取到的仓库数量

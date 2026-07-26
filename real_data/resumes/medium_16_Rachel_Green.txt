@@ -1,0 +1,14 @@
+Name: Rachel Green
+Email: rachel.g@email.com
+Summary: Data analyst with 2 years experience in SQL and Excel. Learning Python for data engineering transition. Strong analytical skills but limited programming experience.
+
+Skills: SQL, Excel, Tableau, Python basics, Pandas basics, Git basics
+
+Experience:
+- Data Analyst @ RetailCorp (2022-Present): Created SQL reports for business stakeholders. Built Tableau dashboards tracking KPIs. Automated Excel workflows with VBA.
+
+Education: B.S. Statistics, Midwestern University (2021)
+
+Projects:
+- Sales Dashboard: Tableau dashboard with SQL backend
+- Data Cleaner: Python script for CSV data cleaning

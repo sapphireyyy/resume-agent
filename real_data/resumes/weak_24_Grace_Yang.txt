@@ -1,0 +1,14 @@
+Name: Grace Yang
+Email: grace.yang@email.com
+Summary: Graphic Designer with 5 years experience. Proficient in Adobe Creative Suite. No coding or software development experience.
+
+Skills: Photoshop, Illustrator, InDesign, Figma, UI/UX Design, Typography, Color Theory
+
+Experience:
+- Senior Designer @ CreativeAgency (2020-Present): Designed brand identities for 50+ clients. Created marketing materials and social media content.
+
+Education: B.F.A. Graphic Design, Art Institute (2018)
+
+Projects:
+- Brand Redesign: Complete rebranding for Fortune 500 client
+- UX Case Study: Mobile app redesign with Figma prototypes

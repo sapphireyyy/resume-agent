@@ -1,0 +1,15 @@
+Name: Ryan Zhang
+Email: ryan.zhang@email.com
+Summary: DevOps/SRE Engineer with 6 years experience. Expert in Kubernetes, Docker, and cloud infrastructure. Built CI/CD pipelines reducing deployment time from 2 hours to 15 minutes. Strong scripting skills in Python and Bash.
+
+Skills: Python, Bash, Go, Kubernetes, Docker, Helm, Terraform, Ansible, AWS, GCP, Jenkins, GitHub Actions, ArgoCD, Prometheus, Grafana, ELK Stack, Istio, Nginx, Redis, MySQL
+
+Experience:
+- Senior DevOps Engineer @ CloudScale (2020-Present): Designed multi-cloud Kubernetes architecture serving 100+ microservices. Built self-service developer platform reducing ops tickets by 70%. Implemented GitOps workflow with ArgoCD.
+- DevOps Engineer @ TechOps (2018-2020): Managed AWS infrastructure for 50+ applications. Built automated CI/CD pipelines. Implemented monitoring and alerting with Prometheus/Grafana.
+
+Education: B.S. Information Systems, NUS (2018)
+
+Projects:
+- K8s Operator: Custom Kubernetes operator for automated database failover
+- InfraCost: Open-source cloud cost optimization tool (800+ stars)

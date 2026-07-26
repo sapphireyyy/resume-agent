@@ -1,0 +1,1 @@
+精通 Python，擅长 FastAPI 异步编程。熟悉 LangChain 工具链，做过 ChatBot 项目。掌握 MySQL 索引优化。Docker 容器化运维经验。有技术博客分享项目心得。

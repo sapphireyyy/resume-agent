@@ -1,0 +1,15 @@
+Name: Emma Thompson
+Email: emma.t@email.com
+Summary: Data Engineer building scalable ETL pipelines processing TB-scale data. Expert in Spark, Airflow, and cloud data warehouses. Strong Python and SQL skills with focus on data quality and governance.
+
+Skills: Python, SQL, PySpark, Apache Spark, Airflow, dbt, Snowflake, BigQuery, Redshift, Kafka, AWS Glue, Docker, Kubernetes, Terraform, Tableau, PowerBI, Git, Linux
+
+Experience:
+- Senior Data Engineer @ DataCo (2021-Present): Built real-time data pipeline processing 10TB/day with Spark Streaming. Migrated legacy ETL to dbt/Snowflake modern stack. Implemented data quality framework reducing data incidents by 80%.
+- Data Engineer @ RetailTech (2019-2021): Designed data warehouse schema for retail analytics. Built Airflow DAGs for 200+ daily jobs.
+
+Education: B.S. Data Science, University of Michigan (2019)
+
+Projects:
+- Data Quality Monitor: Open-source tool for automated data validation (300+ stars)
+- ETL Framework: Python-based declarative ETL with built-in lineage tracking

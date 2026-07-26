@@ -1,0 +1,16 @@
+name: parse-resume
+version: "1.0.0"
+description: 简历 PDF 智能解析，MinerU 解析复杂格式（表格/多栏/图文），PyPDF 降级兜底
+triggers:
+  keywords:
+    - 解析简历
+    - PDF解析
+    - 简历上传
+  intent_patterns:
+    - "parse PDF resume"
+    - "extract text from resume"
+output:
+  status: ok / error
+  text: 解析后的纯文本
+  source: mineru / pypdf / none
+  length: 文本长度

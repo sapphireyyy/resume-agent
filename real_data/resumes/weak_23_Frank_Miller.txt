@@ -1,0 +1,13 @@
+Name: Frank Miller
+Email: frank.m@email.com
+Summary: Retail Store Manager with 10 years experience. Basic computer literacy. No technical or programming background.
+
+Skills: Retail Management, Inventory, POS Systems, Customer Service, Staff Training, Excel basics
+
+Experience:
+- Store Manager @ RetailGiant (2015-Present): Managed store with 30 employees and $2M annual revenue. Handled inventory and supply chain. Trained new employees.
+
+Education: High School Diploma (2013)
+
+Projects:
+

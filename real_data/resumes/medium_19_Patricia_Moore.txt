@@ -1,0 +1,14 @@
+Name: Patricia Moore
+Email: patricia.m@email.com
+Summary: Project Manager with 5 years in tech companies. Learning programming to better communicate with engineering teams. Basic Python and SQL knowledge.
+
+Skills: Project Management, Agile, Scrum, JIRA, basic Python, basic SQL, Excel
+
+Experience:
+- Project Manager @ TechSolutions (2020-Present): Managed software development projects with 10+ engineers. Coordinated sprint planning and retrospectives. Tracked project milestones and budgets.
+
+Education: MBA, Business School (2019)
+B.A. Communications, Liberal Arts College (2015)
+
+Projects:
+- Project Dashboard: Python script generating status reports from JIRA API

@@ -1,0 +1,16 @@
+Name: Maya Patel
+Email: maya.patel@email.com
+Summary: AI Application Engineer with deep expertise in RAG systems and LLM orchestration. Built production knowledge base systems processing 100K+ documents. Proficient in LangChain, LangGraph, and vector databases. Strong Python and FastAPI skills.
+
+Skills: Python, LangChain, LangGraph, OpenAI API, FastAPI, Pinecone, Milvus, Weaviate, ChromaDB, PostgreSQL, MongoDB, Docker, Kubernetes, AWS Bedrock, HuggingFace, BERT, Sentence Transformers, RAG, Agent Architecture
+
+Experience:
+- AI Engineer @ DataBrain (2022-Present): Built RAG-based enterprise search system, improved retrieval accuracy from 72% to 91%. Designed multi-agent orchestration with LangGraph. Implemented hybrid search combining vector and keyword retrieval.
+- ML Engineer @ HealthAI (2020-2022): Developed NLP pipeline for medical document analysis. Trained custom embedding models. Built real-time inference API serving 5K requests/day.
+
+Education: M.S. Artificial Intelligence, CMU (2020)
+B.S. Computer Science, University of Toronto (2018)
+
+Projects:
+- DocuMind: Open-source RAG framework supporting multiple vector DBs and LLM providers (1.2K GitHub stars)
+- AgentBench: Evaluation framework for comparing LangChain vs LangGraph agent patterns

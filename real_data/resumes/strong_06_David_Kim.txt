@@ -1,0 +1,16 @@
+Name: David Kim
+Email: david.kim@email.com
+Summary: Java Backend Developer with 5+ years in enterprise systems. Expert in Spring Boot microservices and distributed systems. Experienced in high-concurrency architecture handling 100K+ TPS.
+
+Skills: Java, Spring Boot, Spring Cloud, MyBatis, MySQL, Redis, RocketMQ, Kafka, Elasticsearch, Docker, Kubernetes, Nacos, Sentinel, Dubbo, Jenkins, Git, Linux, JVM Tuning
+
+Experience:
+- Senior Java Engineer @ ECommerce (2020-Present): Designed order processing system handling 500K daily orders. Optimized JVM GC reducing full GC pauses from 2s to 200ms. Led team of 5 engineers.
+- Java Developer @ BankTech (2018-2020): Built payment gateway integration with 10+ banks. Implemented distributed transaction with TCC pattern.
+
+Education: M.S. Software Engineering, Zhejiang University (2018)
+B.S. Computer Science, HUST (2016)
+
+Projects:
+- Distributed ID Generator: Snowflake-based solution for global unique ID (1K stars)
+- Spring Boot Starter: Custom auto-configuration for internal middleware

@@ -1,0 +1,1 @@
+Python 3年，FastAPI 开发微服务经验。独立搭建 RAG 知识库问答系统，使用 LangChain 编排导入/查询工作流，Milvus 向量检索。Docker Compose 一键部署。Git 版本管理规范。

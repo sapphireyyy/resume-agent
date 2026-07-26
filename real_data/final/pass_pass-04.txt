@@ -1,0 +1,1 @@
+Python 后端 2 年，FastAPI/Django 双框架熟悉。LangChain Agent 开发经验，LLM 应用实践。MongoDB + Redis 缓存方案。Docker 部署线上服务。GitHub 200+ star 项目。

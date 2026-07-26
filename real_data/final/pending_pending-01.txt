@@ -1,0 +1,1 @@
+Python 初学者，用过 Flask 写简单网站。对 AI 应用有兴趣，看过 LangChain 教程但还没实践过。会用 Docker 跑别人写好的镜像。Git 基本操作。

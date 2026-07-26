@@ -1,0 +1,14 @@
+Name: Chris Taylor
+Email: chris.t@email.com
+Summary: QA Tester with 1 year manual testing experience. Learning automation with Selenium and Python. ISTQB certified.
+
+Skills: Manual Testing, Test Case Design, basic Selenium, basic Python, JIRA, SQL basics
+
+Experience:
+- QA Tester @ GameStudio (2023-Present): Wrote and executed test cases for mobile games. Reported and tracked bugs in JIRA. Participated in release testing.
+
+Education: B.S. Computer Science, Online University (2023)
+
+Projects:
+- Test Automation Demo: Selenium scripts for web app testing
+- Bug Tracker: Simple Flask app for tracking issues

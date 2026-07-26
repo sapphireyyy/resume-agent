@@ -1,0 +1,14 @@
+Name: Anna Chen
+Email: anna.chen@email.com
+Summary: Frontend developer with 2 years in React. Some backend exposure with Node.js. Looking to learn Python and FastAPI for full-stack roles.
+
+Skills: React, JavaScript, TypeScript, CSS, HTML, Node.js basics, Express basics
+
+Experience:
+- Frontend Developer @ WebShop (2022-Present): Built React components for e-commerce platform. Implemented responsive design. Collaborated with backend team on API integration.
+
+Education: B.S. Digital Media, Art College (2021)
+
+Projects:
+- Recipe App: React app with recipe search functionality
+- Chat Room: Real-time chat with Socket.io and Express

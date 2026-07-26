@@ -1,0 +1,14 @@
+Name: Henry Zhao
+Email: henry.z@email.com
+Summary: Accountant with CPA certification. 6 years in financial services. Strong Excel skills but no programming experience.
+
+Skills: Accounting, Financial Analysis, Excel, QuickBooks, SAP, Tax Preparation, Auditing
+
+Experience:
+- Senior Accountant @ Big4Firm (2019-Present): Managed financial audits for 20+ corporate clients. Prepared tax filings and financial statements.
+
+Education: M.S. Accounting, State University (2018)
+B.S. Finance, State University (2016)
+
+Projects:
+

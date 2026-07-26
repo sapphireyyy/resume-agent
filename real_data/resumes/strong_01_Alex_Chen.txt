@@ -1,0 +1,16 @@
+Name: Alex Chen
+Email: alex.chen@email.com
+Summary: Senior Backend Engineer with 5+ years building high-traffic APIs. Expert in Python/FastAPI/Django. Led migration from monolith to microservices, reducing latency by 60%. Strong database design skills across PostgreSQL, MongoDB, and Redis.
+
+Skills: Python, FastAPI, Django, Flask, PostgreSQL, MongoDB, Redis, Docker, Kubernetes, AWS, CI/CD, Git, Linux, REST API, GraphQL, gRPC, Celery, RabbitMQ, Kafka, Prometheus, Grafana
+
+Experience:
+- Senior Backend Engineer @ TechCorp (2021-Present): Designed microservices architecture serving 10M+ daily requests. Built real-time data pipeline with Kafka and Redis. Mentored 3 junior engineers.
+- Backend Developer @ StartupX (2019-2021): Built RESTful APIs with FastAPI. Implemented authentication system with JWT/OAuth2. Reduced API response time by 40% through query optimization.
+
+Education: M.S. Computer Science, Stanford University (2019)
+B.S. Software Engineering, UC Berkeley (2017)
+
+Projects:
+- OpenAPI Gateway: Built API gateway handling 50K+ concurrent connections, open-sourced on GitHub (200+ stars)
+- Distributed Task Queue: Custom task queue with priority scheduling, fault tolerance, and monitoring dashboard

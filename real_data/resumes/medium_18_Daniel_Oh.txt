@@ -1,0 +1,14 @@
+Name: Daniel Oh
+Email: daniel.oh@email.com
+Summary: Recent graduate with IT degree. Completed internship in system administration. Interested in DevOps and cloud computing.
+
+Skills: Linux, basic Docker, basic AWS, Python scripting, Bash, Git, Networking basics
+
+Experience:
+- IT Intern @ TechSolutions (2023): Assisted with server maintenance and monitoring. Wrote Bash scripts for automation. Managed user accounts and permissions.
+
+Education: B.S. Information Technology, Regional University (2023)
+
+Projects:
+- Home Lab: Self-hosted services with Docker and Raspberry Pi
+- Monitoring Script: Python script checking server health

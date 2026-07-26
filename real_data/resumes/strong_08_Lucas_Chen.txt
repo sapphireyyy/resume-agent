@@ -1,0 +1,15 @@
+Name: Lucas Chen
+Email: lucas.chen@email.com
+Summary: Go Backend Developer building high-performance distributed systems. Expert in microservices, concurrency patterns, and cloud-native architecture. 4 years experience with Go in production.
+
+Skills: Go, Python, gRPC, Protobuf, Kubernetes, Docker, PostgreSQL, Redis, Kafka, NATS, Consul, Prometheus, Jaeger, AWS, Git, Linux, CI/CD, Helm
+
+Experience:
+- Senior Go Developer @ CloudNative (2021-Present): Built distributed messaging platform handling 1M+ messages/second. Designed event-driven microservices with Kafka and gRPC. Implemented service mesh with Istio.
+- Go Developer @ StartupIO (2019-2021): Built real-time collaboration backend with WebSocket and Redis pub/sub. Optimized Go memory allocation reducing GC overhead by 50%.
+
+Education: B.S. Computer Engineering, University of Waterloo (2019)
+
+Projects:
+- Go-Rate: Distributed rate limiter library (800+ GitHub stars)
+- MicroCI: Lightweight CI/CD runner written in Go

@@ -1,0 +1,15 @@
+Name: Lisa Park
+Email: lisa.park@email.com
+Summary: IT Support transitioning to development. Self-taught Python and JavaScript. Completed a 6-month coding bootcamp. No professional development experience yet.
+
+Skills: Python, JavaScript basics, HTML, CSS, Git, VS Code
+
+Experience:
+- IT Support Specialist @ OfficeCorp (2022-Present): Provided technical support for 200+ employees. Wrote Python scripts to automate IT tasks. Managed Windows/Linux server maintenance.
+
+Education: Coding Bootcamp Certificate, General Assembly (2023)
+B.A. Business Administration, City College (2021)
+
+Projects:
+- Personal Portfolio: Static website built with HTML/CSS/JS
+- Todo App: Simple Flask CRUD application

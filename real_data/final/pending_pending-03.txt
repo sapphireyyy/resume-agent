@@ -1,0 +1,1 @@
+数据科学背景，Python 熟练但偏向数据分析（Pandas/Sklearn）。没做过 Web 后端，不知道 FastAPI/Docker。有 API 调用的经验。

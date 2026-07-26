@@ -1,0 +1,17 @@
+name: risk-check
+version: "1.0.0"
+description: 简历风险信号检测，覆盖 5 类红旗：频繁跳槽、空窗期、技能注水、缺少量化结果、学历差距
+triggers:
+  keywords:
+    - 风险检测
+    - 红旗
+    - 跳槽
+    - 空窗
+  intent_patterns:
+    - "check risks"
+    - "red flags"
+    - "detect issues"
+output:
+  flags: 命中的红旗列表
+  count: 红旗数量
+  severity: low / medium / high

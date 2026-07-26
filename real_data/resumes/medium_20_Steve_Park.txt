@@ -1,0 +1,14 @@
+Name: Steve Park
+Email: steve.park@email.com
+Summary: Junior developer with mixed experience in PHP and WordPress. Learning modern frameworks and Python. 1 year professional experience.
+
+Skills: PHP, WordPress, HTML, CSS, JavaScript basics, basic Python, MySQL basics
+
+Experience:
+- Web Developer @ AgencyCo (2023-Present): Built WordPress websites for small business clients. Customized themes with PHP and CSS. Maintained legacy code.
+
+Education: B.S. Web Development, Online College (2022)
+
+Projects:
+- WordPress Plugin: Custom contact form plugin
+- Blog System: Python Flask blog with MySQL backend

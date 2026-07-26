@@ -1,0 +1,207 @@
+"""
+生成 30 份模拟 IT 简历（模拟 livecareer.com 真实简历结构）
+每份包含：Summary / Skills / Experience / Education / Projects
+分布：10 强 + 10 中 + 10 弱
+"""
+import json, os
+
+resumes = []
+
+# ========== 强匹配 (10) ==========
+
+strong = [
+    # 1 — Python 后端
+    {
+        "name": "Alex Chen", "email": "alex.chen@email.com",
+        "summary": "Senior Backend Engineer with 5+ years building high-traffic APIs. Expert in Python/FastAPI/Django. Led migration from monolith to microservices, reducing latency by 60%. Strong database design skills across PostgreSQL, MongoDB, and Redis.",
+        "skills": "Python, FastAPI, Django, Flask, PostgreSQL, MongoDB, Redis, Docker, Kubernetes, AWS, CI/CD, Git, Linux, REST API, GraphQL, gRPC, Celery, RabbitMQ, Kafka, Prometheus, Grafana",
+        "experience": [
+            "Senior Backend Engineer @ TechCorp (2021-Present): Designed microservices architecture serving 10M+ daily requests. Built real-time data pipeline with Kafka and Redis. Mentored 3 junior engineers.",
+            "Backend Developer @ StartupX (2019-2021): Built RESTful APIs with FastAPI. Implemented authentication system with JWT/OAuth2. Reduced API response time by 40% through query optimization.",
+        ],
+        "education": "M.S. Computer Science, Stanford University (2019)\nB.S. Software Engineering, UC Berkeley (2017)",
+        "projects": [
+            "OpenAPI Gateway: Built API gateway handling 50K+ concurrent connections, open-sourced on GitHub (200+ stars)",
+            "Distributed Task Queue: Custom task queue with priority scheduling, fault tolerance, and monitoring dashboard",
+        ],
+    },
+    # 2 — AI/ML 应用
+    {
+        "name": "Maya Patel", "email": "maya.patel@email.com",
+        "summary": "AI Application Engineer with deep expertise in RAG systems and LLM orchestration. Built production knowledge base systems processing 100K+ documents. Proficient in LangChain, LangGraph, and vector databases. Strong Python and FastAPI skills.",
+        "skills": "Python, LangChain, LangGraph, OpenAI API, FastAPI, Pinecone, Milvus, Weaviate, ChromaDB, PostgreSQL, MongoDB, Docker, Kubernetes, AWS Bedrock, HuggingFace, BERT, Sentence Transformers, RAG, Agent Architecture",
+        "experience": [
+            "AI Engineer @ DataBrain (2022-Present): Built RAG-based enterprise search system, improved retrieval accuracy from 72% to 91%. Designed multi-agent orchestration with LangGraph. Implemented hybrid search combining vector and keyword retrieval.",
+            "ML Engineer @ HealthAI (2020-2022): Developed NLP pipeline for medical document analysis. Trained custom embedding models. Built real-time inference API serving 5K requests/day.",
+        ],
+        "education": "M.S. Artificial Intelligence, CMU (2020)\nB.S. Computer Science, University of Toronto (2018)",
+        "projects": [
+            "DocuMind: Open-source RAG framework supporting multiple vector DBs and LLM providers (1.2K GitHub stars)",
+            "AgentBench: Evaluation framework for comparing LangChain vs LangGraph agent patterns",
+        ],
+    },
+    # 3 — 全栈
+    {
+        "name": "Jordan Lee", "email": "jordan.lee@email.com",
+        "summary": "Full-Stack Developer with 4 years building SaaS products. Proficient in React/Next.js frontend and Python/FastAPI backend. Experienced in AWS cloud architecture and CI/CD pipelines.",
+        "skills": "Python, FastAPI, JavaScript, TypeScript, React, Next.js, Node.js, PostgreSQL, MongoDB, Redis, AWS, Docker, Kubernetes, Terraform, CI/CD, GraphQL, REST, WebSocket, Nginx, Git",
+        "experience": [
+            "Full-Stack Engineer @ SaaSFlow (2021-Present): Built and maintained B2B SaaS platform with 500+ enterprise clients. Architected event-driven backend with FastAPI and Redis pub/sub. Led migration from monolith to micro-frontend architecture.",
+            "Software Developer @ WebPro (2019-2021): Developed React dashboard for analytics platform. Built REST APIs with FastAPI. Implemented real-time notification system with WebSocket.",
+        ],
+        "education": "B.S. Computer Science, Georgia Tech (2019)",
+        "projects": ["E-Commerce Platform: Full-stack marketplace with real-time bidding (3K users)", "DevOps Toolkit: CLI tool automating AWS infrastructure setup (500+ GitHub stars)"],
+    },
+    # 4 — DevOps
+    {
+        "name": "Ryan Zhang", "email": "ryan.zhang@email.com",
+        "summary": "DevOps/SRE Engineer with 6 years experience. Expert in Kubernetes, Docker, and cloud infrastructure. Built CI/CD pipelines reducing deployment time from 2 hours to 15 minutes. Strong scripting skills in Python and Bash.",
+        "skills": "Python, Bash, Go, Kubernetes, Docker, Helm, Terraform, Ansible, AWS, GCP, Jenkins, GitHub Actions, ArgoCD, Prometheus, Grafana, ELK Stack, Istio, Nginx, Redis, MySQL",
+        "experience": [
+            "Senior DevOps Engineer @ CloudScale (2020-Present): Designed multi-cloud Kubernetes architecture serving 100+ microservices. Built self-service developer platform reducing ops tickets by 70%. Implemented GitOps workflow with ArgoCD.",
+            "DevOps Engineer @ TechOps (2018-2020): Managed AWS infrastructure for 50+ applications. Built automated CI/CD pipelines. Implemented monitoring and alerting with Prometheus/Grafana.",
+        ],
+        "education": "B.S. Information Systems, NUS (2018)",
+        "projects": ["K8s Operator: Custom Kubernetes operator for automated database failover", "InfraCost: Open-source cloud cost optimization tool (800+ stars)"],
+    },
+    # 5 — 前端
+    {
+        "name": "Sophia Wang", "email": "sophia.wang@email.com",
+        "summary": "Senior Frontend Engineer specializing in React ecosystem. 5 years building complex web applications. Expert in TypeScript, performance optimization, and design systems.",
+        "skills": "TypeScript, JavaScript, React, Next.js, Vue.js, Redux, Zustand, TailwindCSS, Webpack, Vite, Jest, Cypress, Storybook, GraphQL, WebSocket, Node.js, Git, Docker, Nginx",
+        "experience": [
+            "Senior Frontend Engineer @ FinTech (2021-Present): Led frontend team building trading platform used by 100K+ users. Implemented micro-frontend architecture. Reduced bundle size by 60% through code splitting and lazy loading.",
+            "Frontend Developer @ WebAgency (2019-2021): Built responsive web applications for enterprise clients. Created reusable component library used across 10+ projects.",
+        ],
+        "education": "B.S. Computer Science, University of Washington (2019)",
+        "projects": ["React Component Library: Open-source UI kit with 50+ components (2K stars)", "PerfBuddy: Chrome extension for real-time React performance monitoring"],
+    },
+    # 6 — Java 后端
+    {
+        "name": "David Kim", "email": "david.kim@email.com",
+        "summary": "Java Backend Developer with 5+ years in enterprise systems. Expert in Spring Boot microservices and distributed systems. Experienced in high-concurrency architecture handling 100K+ TPS.",
+        "skills": "Java, Spring Boot, Spring Cloud, MyBatis, MySQL, Redis, RocketMQ, Kafka, Elasticsearch, Docker, Kubernetes, Nacos, Sentinel, Dubbo, Jenkins, Git, Linux, JVM Tuning",
+        "experience": [
+            "Senior Java Engineer @ ECommerce (2020-Present): Designed order processing system handling 500K daily orders. Optimized JVM GC reducing full GC pauses from 2s to 200ms. Led team of 5 engineers.",
+            "Java Developer @ BankTech (2018-2020): Built payment gateway integration with 10+ banks. Implemented distributed transaction with TCC pattern.",
+        ],
+        "education": "M.S. Software Engineering, Zhejiang University (2018)\nB.S. Computer Science, HUST (2016)",
+        "projects": ["Distributed ID Generator: Snowflake-based solution for global unique ID (1K stars)", "Spring Boot Starter: Custom auto-configuration for internal middleware"],
+    },
+    # 7 — 数据工程
+    {
+        "name": "Emma Thompson", "email": "emma.t@email.com",
+        "summary": "Data Engineer building scalable ETL pipelines processing TB-scale data. Expert in Spark, Airflow, and cloud data warehouses. Strong Python and SQL skills with focus on data quality and governance.",
+        "skills": "Python, SQL, PySpark, Apache Spark, Airflow, dbt, Snowflake, BigQuery, Redshift, Kafka, AWS Glue, Docker, Kubernetes, Terraform, Tableau, PowerBI, Git, Linux",
+        "experience": [
+            "Senior Data Engineer @ DataCo (2021-Present): Built real-time data pipeline processing 10TB/day with Spark Streaming. Migrated legacy ETL to dbt/Snowflake modern stack. Implemented data quality framework reducing data incidents by 80%.",
+            "Data Engineer @ RetailTech (2019-2021): Designed data warehouse schema for retail analytics. Built Airflow DAGs for 200+ daily jobs.",
+        ],
+        "education": "B.S. Data Science, University of Michigan (2019)",
+        "projects": ["Data Quality Monitor: Open-source tool for automated data validation (300+ stars)", "ETL Framework: Python-based declarative ETL with built-in lineage tracking"],
+    },
+    # 8 — Go 后端
+    {
+        "name": "Lucas Chen", "email": "lucas.chen@email.com",
+        "summary": "Go Backend Developer building high-performance distributed systems. Expert in microservices, concurrency patterns, and cloud-native architecture. 4 years experience with Go in production.",
+        "skills": "Go, Python, gRPC, Protobuf, Kubernetes, Docker, PostgreSQL, Redis, Kafka, NATS, Consul, Prometheus, Jaeger, AWS, Git, Linux, CI/CD, Helm",
+        "experience": [
+            "Senior Go Developer @ CloudNative (2021-Present): Built distributed messaging platform handling 1M+ messages/second. Designed event-driven microservices with Kafka and gRPC. Implemented service mesh with Istio.",
+            "Go Developer @ StartupIO (2019-2021): Built real-time collaboration backend with WebSocket and Redis pub/sub. Optimized Go memory allocation reducing GC overhead by 50%.",
+        ],
+        "education": "B.S. Computer Engineering, University of Waterloo (2019)",
+        "projects": ["Go-Rate: Distributed rate limiter library (800+ GitHub stars)", "MicroCI: Lightweight CI/CD runner written in Go"],
+    },
+    # 9 — 安全工程
+    {
+        "name": "Sarah Johnson", "email": "sarah.j@email.com",
+        "summary": "Application Security Engineer with 4 years experience. Expert in secure coding practices, penetration testing, and security architecture. Strong Python and automation skills.",
+        "skills": "Python, Bash, Burp Suite, Metasploit, OWASP ZAP, Docker, Kubernetes, AWS Security, SAST, DAST, SCA, WAF, Splunk, Git, Linux, CI/CD Security",
+        "experience": [
+            "Security Engineer @ SecureTech (2021-Present): Built automated security scanning pipeline integrated with CI/CD. Conducted security reviews for 50+ applications. Reduced vulnerability remediation time from 30 days to 3 days.",
+            "Security Analyst @ FinSecure (2019-2021): Performed penetration testing on banking applications. Developed security automation scripts in Python.",
+        ],
+        "education": "B.S. Cybersecurity, Purdue University (2019)",
+        "projects": ["VulnScanner: Automated vulnerability assessment tool (600+ stars)", "SecureCoding: Educational platform for secure coding practices"],
+    },
+    # 10 — QA/测试
+    {
+        "name": "Kevin Liu", "email": "kevin.liu@email.com",
+        "summary": "Senior QA Automation Engineer building test frameworks from scratch. Expert in Selenium, Playwright, and API testing. Strong Python skills for test automation.",
+        "skills": "Python, Java, Selenium, Playwright, Cypress, Appium, JMeter, Postman, REST Assured, Jenkins, Docker, Git, JIRA, TestRail, Allure, SQL, Linux",
+        "experience": [
+            "Lead QA Engineer @ QualityFirst (2021-Present): Built test automation framework covering 1000+ test cases. Integrated automated testing into CI/CD pipeline. Reduced regression testing time from 2 weeks to 4 hours.",
+            "QA Engineer @ MobileApp (2019-2021): Automated mobile app testing with Appium. Built API testing suite with Python and requests.",
+        ],
+        "education": "B.S. Computer Science, UC Irvine (2019)",
+        "projects": ["TestFusion: Open-source test framework combining UI and API testing", "PerfTest: Distributed load testing tool built with Python and Locust"],
+    },
+]
+
+# ========== 中匹配 (10) ==========
+
+medium = [
+    {"name": "Tom Baker", "email": "tom.baker@email.com", "summary": "Junior Python Developer with 1 year experience in web scraping and automation scripts. Learning FastAPI and Docker. Looking to transition into backend development.", "skills": "Python, basic FastAPI, basic SQL, Git, Linux basics, HTML, CSS", "experience": ["Junior Developer @ SmallCo (2023-Present): Wrote Python scripts for data extraction. Built simple Flask APIs for internal tools. Maintained legacy PHP codebase."], "education": "B.S. Information Technology, State University (2023)", "projects": ["Weather API: Simple FastAPI app returning weather data", "Web Scraper: Python script collecting product prices from e-commerce sites"]},
+    {"name": "Lisa Park", "email": "lisa.park@email.com", "summary": "IT Support transitioning to development. Self-taught Python and JavaScript. Completed a 6-month coding bootcamp. No professional development experience yet.", "skills": "Python, JavaScript basics, HTML, CSS, Git, VS Code", "experience": ["IT Support Specialist @ OfficeCorp (2022-Present): Provided technical support for 200+ employees. Wrote Python scripts to automate IT tasks. Managed Windows/Linux server maintenance."], "education": "Coding Bootcamp Certificate, General Assembly (2023)\nB.A. Business Administration, City College (2021)", "projects": ["Personal Portfolio: Static website built with HTML/CSS/JS", "Todo App: Simple Flask CRUD application"]},
+    {"name": "Mike Rivers", "email": "mike.rivers@email.com", "summary": "Self-taught programmer with 6 months of Python experience. Passionate about AI and machine learning. Completed online courses but lacks professional experience.", "skills": "Python, NumPy, Pandas, basics of Scikit-learn, Jupyter, Git", "experience": ["Freelance Developer (2023-Present): Built small Python scripts for local businesses. Created data analysis reports with Pandas."], "education": "B.A. Economics, Community College (2022)", "projects": ["Stock Predictor: ML model predicting stock prices (course project)", "Chat Bot: Simple Telegram bot using OpenAI API"]},
+    {"name": "Anna Chen", "email": "anna.chen@email.com", "summary": "Frontend developer with 2 years in React. Some backend exposure with Node.js. Looking to learn Python and FastAPI for full-stack roles.", "skills": "React, JavaScript, TypeScript, CSS, HTML, Node.js basics, Express basics", "experience": ["Frontend Developer @ WebShop (2022-Present): Built React components for e-commerce platform. Implemented responsive design. Collaborated with backend team on API integration."], "education": "B.S. Digital Media, Art College (2021)", "projects": ["Recipe App: React app with recipe search functionality", "Chat Room: Real-time chat with Socket.io and Express"]},
+    {"name": "James Wu", "email": "james.wu@email.com", "summary": "CS student graduating this year. Good academic foundation but limited practical experience. Completed two course projects in Python and Java.", "skills": "Python, Java, C++, SQL basics, Git, Linux commands, Data Structures, Algorithms", "experience": ["Intern @ University IT Dept (2023 Summer): Assisted with database maintenance. Wrote documentation for internal tools."], "education": "B.S. Computer Science, State University, expected 2024\nGPA: 3.6/4.0", "projects": ["Student Management System: CRUD app with Java Swing and MySQL", "Tic-Tac-Toe AI: Python implementation with minimax algorithm"]},
+    {"name": "Rachel Green", "email": "rachel.g@email.com", "summary": "Data analyst with 2 years experience in SQL and Excel. Learning Python for data engineering transition. Strong analytical skills but limited programming experience.", "skills": "SQL, Excel, Tableau, Python basics, Pandas basics, Git basics", "experience": ["Data Analyst @ RetailCorp (2022-Present): Created SQL reports for business stakeholders. Built Tableau dashboards tracking KPIs. Automated Excel workflows with VBA."], "education": "B.S. Statistics, Midwestern University (2021)", "projects": ["Sales Dashboard: Tableau dashboard with SQL backend", "Data Cleaner: Python script for CSV data cleaning"]},
+    {"name": "Chris Taylor", "email": "chris.t@email.com", "summary": "QA Tester with 1 year manual testing experience. Learning automation with Selenium and Python. ISTQB certified.", "skills": "Manual Testing, Test Case Design, basic Selenium, basic Python, JIRA, SQL basics", "experience": ["QA Tester @ GameStudio (2023-Present): Wrote and executed test cases for mobile games. Reported and tracked bugs in JIRA. Participated in release testing."], "education": "B.S. Computer Science, Online University (2023)", "projects": ["Test Automation Demo: Selenium scripts for web app testing", "Bug Tracker: Simple Flask app for tracking issues"]},
+    {"name": "Daniel Oh", "email": "daniel.oh@email.com", "summary": "Recent graduate with IT degree. Completed internship in system administration. Interested in DevOps and cloud computing.", "skills": "Linux, basic Docker, basic AWS, Python scripting, Bash, Git, Networking basics", "experience": ["IT Intern @ TechSolutions (2023): Assisted with server maintenance and monitoring. Wrote Bash scripts for automation. Managed user accounts and permissions."], "education": "B.S. Information Technology, Regional University (2023)", "projects": ["Home Lab: Self-hosted services with Docker and Raspberry Pi", "Monitoring Script: Python script checking server health"]},
+    {"name": "Patricia Moore", "email": "patricia.m@email.com", "summary": "Project Manager with 5 years in tech companies. Learning programming to better communicate with engineering teams. Basic Python and SQL knowledge.", "skills": "Project Management, Agile, Scrum, JIRA, basic Python, basic SQL, Excel", "experience": ["Project Manager @ TechSolutions (2020-Present): Managed software development projects with 10+ engineers. Coordinated sprint planning and retrospectives. Tracked project milestones and budgets."], "education": "MBA, Business School (2019)\nB.A. Communications, Liberal Arts College (2015)", "projects": ["Project Dashboard: Python script generating status reports from JIRA API"]},
+    {"name": "Steve Park", "email": "steve.park@email.com", "summary": "Junior developer with mixed experience in PHP and WordPress. Learning modern frameworks and Python. 1 year professional experience.", "skills": "PHP, WordPress, HTML, CSS, JavaScript basics, basic Python, MySQL basics", "experience": ["Web Developer @ AgencyCo (2023-Present): Built WordPress websites for small business clients. Customized themes with PHP and CSS. Maintained legacy code."], "education": "B.S. Web Development, Online College (2022)", "projects": ["WordPress Plugin: Custom contact form plugin", "Blog System: Python Flask blog with MySQL backend"]},
+]
+
+# ========== 弱匹配 (10) ==========
+
+weak = [
+    {"name": "Bob Wilson", "email": "bob.wilson@email.com", "summary": "Sales Manager with 8 years in B2B sales. No programming experience. Looking for career change into tech but haven't started learning yet.", "skills": "Sales, CRM, Excel, PowerPoint, Negotiation, Team Management", "experience": ["Senior Sales Manager @ EnterpriseCorp (2018-Present): Led sales team of 15 people. Closed $5M+ in annual deals. Managed client relationships across Asia-Pacific."], "education": "B.A. Marketing, Business School (2015)", "projects": []},
+    {"name": "Cindy Luo", "email": "cindy.luo@email.com", "summary": "Administrative Assistant with 3 years office experience. Comfortable with computers but no programming skills. Interested in data entry roles.", "skills": "Microsoft Office, Google Suite, Data Entry, Customer Service, Filing, Scheduling", "experience": ["Admin Assistant @ LawFirm (2021-Present): Managed office operations and scheduling. Organized client files and correspondence. Handled billing and invoicing."], "education": "A.S. Office Administration, Community College (2020)", "projects": []},
+    {"name": "Frank Miller", "email": "frank.m@email.com", "summary": "Retail Store Manager with 10 years experience. Basic computer literacy. No technical or programming background.", "skills": "Retail Management, Inventory, POS Systems, Customer Service, Staff Training, Excel basics", "experience": ["Store Manager @ RetailGiant (2015-Present): Managed store with 30 employees and $2M annual revenue. Handled inventory and supply chain. Trained new employees."], "education": "High School Diploma (2013)", "projects": []},
+    {"name": "Grace Yang", "email": "grace.yang@email.com", "summary": "Graphic Designer with 5 years experience. Proficient in Adobe Creative Suite. No coding or software development experience.", "skills": "Photoshop, Illustrator, InDesign, Figma, UI/UX Design, Typography, Color Theory", "experience": ["Senior Designer @ CreativeAgency (2020-Present): Designed brand identities for 50+ clients. Created marketing materials and social media content."], "education": "B.F.A. Graphic Design, Art Institute (2018)", "projects": ["Brand Redesign: Complete rebranding for Fortune 500 client", "UX Case Study: Mobile app redesign with Figma prototypes"]},
+    {"name": "Henry Zhao", "email": "henry.z@email.com", "summary": "Accountant with CPA certification. 6 years in financial services. Strong Excel skills but no programming experience.", "skills": "Accounting, Financial Analysis, Excel, QuickBooks, SAP, Tax Preparation, Auditing", "experience": ["Senior Accountant @ Big4Firm (2019-Present): Managed financial audits for 20+ corporate clients. Prepared tax filings and financial statements."], "education": "M.S. Accounting, State University (2018)\nB.S. Finance, State University (2016)", "projects": []},
+    {"name": "Irene Sun", "email": "irene.sun@email.com", "summary": "English teacher with 4 years experience teaching abroad. Fluent in English and Chinese. No technical or programming background.", "skills": "Teaching, Curriculum Design, Public Speaking, Translation, Classroom Management", "experience": ["ESL Teacher @ LanguageSchool (2020-Present): Taught English to 200+ students. Designed curriculum for business English courses. Prepared students for TOEFL/IELTS exams."], "education": "B.A. English Literature, Teachers College (2019)", "projects": []},
+    {"name": "Jack Turner", "email": "jack.t@email.com", "summary": "Truck driver with CDL license. 15 years in logistics. Reliable and punctual but no computer skills beyond basic usage.", "skills": "CDL License, Logistics, Route Planning, Vehicle Maintenance, Safety Compliance", "experience": ["Delivery Driver @ LogisticsCo (2010-Present): Delivered freight across 5 states. Maintained perfect safety record. Managed delivery schedules and documentation."], "education": "GED (2008)", "projects": []},
+    {"name": "Karen White", "email": "karen.w@email.com", "summary": "Nurse with 7 years hospital experience. Licensed RN. Compassionate and detail-oriented. No coding experience but interested in health tech.", "skills": "Patient Care, Medical Records, CPR Certified, HIPAA Compliance, Team Communication", "experience": ["Registered Nurse @ CityHospital (2017-Present): Provided patient care in emergency department. Managed patient records and treatment plans."], "education": "B.S. Nursing, Medical University (2016)", "projects": []},
+    {"name": "Leo Martinez", "email": "leo.m@email.com", "summary": "Restaurant Chef with 12 years culinary experience. Expert in Italian and French cuisine. No technical skills beyond POS system usage.", "skills": "Cooking, Menu Planning, Kitchen Management, Food Safety, Inventory, Cost Control", "experience": ["Head Chef @ FineDining (2016-Present): Managed kitchen of 15 staff. Designed seasonal menus. Maintained food cost below 30%."], "education": "Culinary Arts Diploma, Cooking School (2010)", "projects": []},
+    {"name": "Megan Foster", "email": "megan.f@email.com", "summary": "Real Estate Agent with 5 years experience. Licensed in 3 states. Strong negotiation skills but no technical background.", "skills": "Real Estate, Sales, Negotiation, CRM, MLS, Contract Law, Marketing", "experience": ["Real Estate Agent @ PremierProperties (2019-Present): Closed 50+ residential transactions. Built client base through networking and referrals."], "education": "B.S. Business, State College (2017)", "projects": []},
+]
+
+all_resumes = strong + medium + weak
+
+os.makedirs("real_data", exist_ok=True)
+
+# 保存为 JSON
+with open("real_data/resumes.json", "w", encoding="utf-8") as f:
+    json.dump(all_resumes, f, ensure_ascii=False, indent=2)
+
+# 保存为单独文本（方便测试）
+os.makedirs("real_data/resumes", exist_ok=True)
+for i, r in enumerate(all_resumes):
+    text = f"""Name: {r['name']}
+Email: {r['email']}
+Summary: {r['summary']}
+
+Skills: {r['skills']}
+
+Experience:
+""" + "\n".join(f"- {exp}" for exp in r.get("experience", [])) + f"""
+
+Education: {r['education']}
+
+Projects:
+""" + "\n".join(f"- {p}" for p in r.get("projects", ["None"])) + "\n"
+
+    cat = "strong" if i < 10 else "medium" if i < 20 else "weak"
+    filename = f"real_data/resumes/{cat}_{i+1:02d}_{r['name'].replace(' ','_')}.txt"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(text)
+
+print(f"生成 {len(all_resumes)} 份简历:")
+print(f"  强匹配(10): {[r['name'] for r in strong]}")
+print(f"  中匹配(10): {[r['name'] for r in medium]}")
+print(f"  弱匹配(10): {[r['name'] for r in weak]}")
+print("\n文件:")
+print(f"  real_data/resumes.json (30份汇总)")
+print(f"  real_data/resumes/ (30个独立文本)")

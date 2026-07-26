@@ -1,0 +1,13 @@
+Name: Jack Turner
+Email: jack.t@email.com
+Summary: Truck driver with CDL license. 15 years in logistics. Reliable and punctual but no computer skills beyond basic usage.
+
+Skills: CDL License, Logistics, Route Planning, Vehicle Maintenance, Safety Compliance
+
+Experience:
+- Delivery Driver @ LogisticsCo (2010-Present): Delivered freight across 5 states. Maintained perfect safety record. Managed delivery schedules and documentation.
+
+Education: GED (2008)
+
+Projects:
+

@@ -1,0 +1,16 @@
+name: experience-score
+version: "1.0.0"
+description: LLM 驱动的简历经历质量评估，分析项目深度、实习质量与技术栈匹配度
+triggers:
+  keywords:
+    - 经历评分
+    - 项目评估
+    - 实习质量
+  intent_patterns:
+    - "score experience"
+    - "evaluate projects"
+output:
+  project_score: 项目经历评分 0.0~1.0
+  internship_score: 实习经历评分 0.0~1.0
+  strengths: 经历亮点列表
+  weaknesses: 经历不足列表

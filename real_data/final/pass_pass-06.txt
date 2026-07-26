@@ -1,0 +1,1 @@
+熟练 Python，个人项目用 FastAPI + MySQL 搭建博客后端。正在学习 LangChain Agent 开发。Docker 日常使用。GitHub 持续提交 6 个月。LeetCode 刷了 100 题。

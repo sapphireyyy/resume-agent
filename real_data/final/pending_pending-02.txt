@@ -1,0 +1,1 @@
+Java 后端 2 年，想转 AI 方向。学过 Python 基础语法，没做过实际 AI 项目。了解 Docker 概念，没用过 LangChain/FastAPI。MySQL 数据库使用熟练。

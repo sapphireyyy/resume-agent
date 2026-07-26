@@ -1,0 +1,13 @@
+Name: Megan Foster
+Email: megan.f@email.com
+Summary: Real Estate Agent with 5 years experience. Licensed in 3 states. Strong negotiation skills but no technical background.
+
+Skills: Real Estate, Sales, Negotiation, CRM, MLS, Contract Law, Marketing
+
+Experience:
+- Real Estate Agent @ PremierProperties (2019-Present): Closed 50+ residential transactions. Built client base through networking and referrals.
+
+Education: B.S. Business, State College (2017)
+
+Projects:
+

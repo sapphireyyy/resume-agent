@@ -1,0 +1,1 @@
+Python 后端实习经验，FastAPI 开发 3 个 API 服务。了解 RAG 原理，做过简单的文档问答 Demo。MySQL 数据库基础扎实。Docker 部署过个人项目。

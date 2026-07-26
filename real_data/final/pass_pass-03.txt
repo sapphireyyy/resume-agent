@@ -1,0 +1,1 @@
+熟练 Python + FastAPI，做过 Agent 工具调用项目（ReAct 模式）。MySQL 数据库设计，RESTful API 设计。Docker 容器化经验。项目代码在 GitHub 开源。

@@ -1,0 +1,1 @@
+Python FastAPI 2 年经验，做过 AI 客服系统（RAG+LLM）。MySQL 分库分表设计。Docker+K8s 部署经验。GitHub 维护 3 个 AI 相关开源项目。

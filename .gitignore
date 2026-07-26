@@ -1,0 +1,51 @@
+# 虚拟环境
+.venv/
+venv/
+env/
+myenv/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 环境变量（含 API Key，绝对不能提交）
+.env
+
+# 日志
+logs/
+*.log
+
+# 大数据文件
+real_data/hf/
+real_data/hf_resumes/
+*.parquet
+
+# 临时文件
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# JSON 结果缓存（Harness 输出，不提交）
+screen_harness_result.json
+harness/screen_harness_result.json
+example/screen_harness_result.json
+
+# 数据库文件
+*.db
+
+# SQLite
+*.sqlite3

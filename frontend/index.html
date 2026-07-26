@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>resume-agent — AI 智能简历筛选</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f8fb;
+    --surface: #ffffff;
+    --border: #e8ecf3;
+    --text: #1e1e2f;
+    --text-secondary: #6b7280;
+    --primary: #4f46e5;
+    --primary-light: #eef2ff;
+    --primary-dark: #3730a3;
+    --success: #059669;
+    --success-bg: #ecfdf5;
+    --warning: #d97706;
+    --warning-bg: #fffbeb;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4f46e5 100%);
+    color: #fff;
+    padding: 32px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; top: -60%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; position: relative; }
+  .header p { font-size: 14px; opacity: 0.7; margin-top: 4px; position: relative; font-weight: 400; }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
+
+  /* ===== Tabs ===== */
+  .tabs {
+    display: flex; gap: 4px; margin-bottom: 24px;
+    background: var(--surface); border-radius: var(--radius);
+    padding: 4px; box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1; padding: 11px 0; text-align: center; cursor: pointer;
+    font-size: 14px; font-weight: 500; color: var(--text-secondary);
+    border: none; background: transparent; border-radius: 11px;
+    transition: all 0.2s ease;
+  }
+  .tab:hover { color: var(--primary); background: var(--primary-light); }
+  .tab.active { color: #fff; background: var(--primary); font-weight: 600; box-shadow: 0 2px 8px rgba(79,70,229,.3); }
+
+  /* ===== Card ===== */
+  .card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 28px 30px; margin-bottom: 20px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-lg); }
+  .card-title {
+    font-size: 16px; font-weight: 700; margin-bottom: 20px;
+    color: var(--text); display: flex; align-items: center; gap: 10px;
+    letter-spacing: -0.2px;
+  }
+  .card-title .icon-circle {
+    width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .icon-jd { background: #eef2ff; }
+  .icon-resume { background: #fef3c7; }
+
+  /* ===== Form ===== */
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+  }
+  textarea {
+    width: 100%; min-height: 100px; padding: 14px 16px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 14px; line-height: 1.7; resize: vertical; font-family: inherit;
+    transition: all 0.2s; background: #fafbfd; color: var(--text);
+  }
+  textarea:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px; margin: 22px 0;
+    color: #c4c7cc; font-size: 12px; font-weight: 500;
+  }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .upload-zone {
+    border: 2px dashed #c7cdd9; border-radius: var(--radius-sm);
+    padding: 28px; text-align: center; cursor: pointer;
+    transition: all 0.2s; background: #fafbfd;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--primary); background: var(--primary-light);
+  }
+  .upload-zone svg { width: 40px; height: 40px; color: #9ca3af; margin-bottom: 8px; transition: color 0.2s; }
+  .upload-zone:hover svg { color: var(--primary); }
+  .upload-zone p { font-size: 13px; color: #9ca3af; margin: 0; }
+  .upload-zone .filename { font-size: 13px; color: var(--primary); font-weight: 600; margin-top: 8px; display: none; }
+  #pdfInput { display: none; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 32px; border: none; border-radius: var(--radius-sm);
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    letter-spacing: -0.2px;
+  }
+  .btn-primary {
+    background: var(--primary); color: #fff; width: 100%;
+    box-shadow: 0 2px 8px rgba(79,70,229,.25);
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,.35); }
+  .btn-primary:disabled { background: #a5b4fc; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-sm { padding: 7px 16px; font-size: 13px; width: auto; }
+
+  /* ===== Result Area ===== */
+  .result-section { display: none; }
+  .result-section.show { display: block; animation: slideUp 0.35s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .conclusion-hero {
+    display: flex; align-items: center; gap: 16px; padding: 20px 24px;
+    border-radius: var(--radius-sm); margin-bottom: 16px;
+  }
+  .conclusion-hero .badge {
+    font-size: 22px; font-weight: 800; padding: 10px 24px; border-radius: 50px;
+    letter-spacing: -0.3px;
+  }
+  .conclusion-hero .meta { font-size: 13px; color: var(--text-secondary); }
+  .conclusion-hero .meta strong { color: var(--text); }
+
+  .bg-interview { background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .bg-interview .badge { background: #059669; color: #fff; }
+  .bg-pending { background: #fffbeb; border: 1px solid #fde68a; }
+  .bg-pending .badge { background: #d97706; color: #fff; }
+  .bg-reject { background: #fef2f2; border: 1px solid #fecaca; }
+  .bg-reject .badge { background: #dc2626; color: #fff; }
+
+  .worker-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .worker-chip {
+    font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 50px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .w-skill { background: #eef2ff; color: #4f46e5; }
+  .w-experience { background: #fef3c7; color: #b45309; }
+  .w-risk { background: #fce7f3; color: #be185d; }
+
+  /* ===== Analysis Report ===== */
+  .analysis-report {
+    background: #fafbfd; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 24px; font-size: 14px; line-height: 1.8; color: #374151;
+    max-height: 550px; overflow-y: auto; white-space: pre-wrap; word-break: break-word;
+  }
+  .analysis-report::-webkit-scrollbar { width: 6px; }
+  .analysis-report::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+  /* ===== Status Badge ===== */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase;
+  }
+  .status-pending { background: #fffbeb; color: #b45309; }
+  .status-running { background: #eef2ff; color: #4f46e5; }
+  .status-running::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #4f46e5; animation: pulse-dot 1.2s ease-in-out infinite; }
+  .status-done { background: #ecfdf5; color: #059669; }
+  .status-failed { background: #fef2f2; color: #dc2626; }
+
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .spinner {
+    width: 20px; height: 20px; border: 2.5px solid #d1d5db; border-top-color: #4f46e5;
+    border-radius: 50%; animation: spin 0.6s linear infinite;
+  }
+
+  /* ===== History ===== */
+  .history-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .history-table th { background: #f9fafb; padding: 10px 16px; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 2px solid var(--border); }
+  .history-table td { padding: 12px 16px; border-bottom: 1px solid #f3f4f6; }
+  .history-table tr:hover td { background: #f9fafb; }
+
+  .empty-state {
+    text-align: center; padding: 48px 20px; color: #9ca3af;
+  }
+  .empty-state svg { width: 48px; height: 48px; margin-bottom: 12px; color: #d1d5db; }
+  .empty-state p { font-size: 14px; }
+
+  /* ===== Harness ===== */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    background: #f9fafb; border-radius: var(--radius-sm); padding: 18px 16px;
+    text-align: center; border: 1px solid var(--border);
+  }
+  .stat-card .stat-value { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
+  .stat-card .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; font-weight: 500; }
+  .stat-card.stat-success .stat-value { color: #059669; }
+  .stat-card.stat-danger .stat-value { color: #dc2626; }
+
+  .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .dot-green { background: #10b981; }
+  .dot-red { background: #ef4444; }
+  .dot-yellow { background: #f59e0b; }
+
+  /* ===== DB Candidates ===== */
+  .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-bar select, .filter-bar input {
+    padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: inherit; background: #fafbfd;
+  }
+  .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--primary); }
+  .status-cell { font-weight: 600; font-size: 13px; }
+  .s-pass { color: #059669; }
+  .s-pending { color: #d97706; }
+  .s-reject { color: #dc2626; }
+  .pagination { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+  .pagination button {
+    padding: 6px 14px; border: 1px solid var(--border); border-radius: 8px;
+    background: #fff; cursor: pointer; font-size: 13px;
+  }
+  .pagination button:hover { background: var(--primary-light); }
+  .pagination button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  @media (max-width: 640px) {
+    .container { padding: 12px; }
+    .card { padding: 20px 16px; }
+    .conclusion-hero { flex-direction: column; align-items: flex-start; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>resume-agent</h1>
+  <p>AI 驱动的智能简历筛选平台 · Supervisor-Worker 多 Agent 协作</p>
+</div>
+
+<div class="container">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('screen')">📝 简历筛选</button>
+    <button class="tab" onclick="switchTab('candidates')">💼 候选人库</button>
+    <button class="tab" onclick="switchTab('history')">📊 历史记录</button>
+    <button class="tab" onclick="switchTab('harness')">🧪 自动化评测</button>
+  </div>
+
+  <!-- ==================== 筛选 Tab ==================== -->
+  <div id="tab-screen">
+
+    <!-- JD 卡片 -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon-circle icon-jd">📌</span> 职位描述 (JD)
+      </div>
+      <div class="form-group">
+        <textarea id="jdText" placeholder="输入职位描述，例如：&#10;Python FastAPI MySQL Docker 后端开发，三年经验，负责大模型应用开发与部署..."></textarea>
+      </div>
+    </div>
+
+    <!-- 简历卡片 -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon-circle icon-resume">📄</span> 候选人简历
+      </div>
+
+      <div class="form-group">
+        <label>方式一：直接粘贴简历文本</label>
+        <textarea id="resumeText" placeholder="粘贴候选人简历文本..."></textarea>
+      </div>
+
+      <div class="divider">或</div>
+
+      <div class="form-group">
+        <label>方式二：上传 PDF 简历</label>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('pdfInput').click()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+          </svg>
+          <p>点击选择 PDF 文件，或拖拽到此处</p>
+          <div class="filename" id="fileName"></div>
+        </div>
+        <input type="file" id="pdfInput" accept=".pdf" onchange="handleFileSelect(event)">
+      </div>
+
+      <button class="btn btn-primary" id="submitBtn" onclick="submitScreen()">
+        🔍 开始智能筛选
+      </button>
+    </div>
+
+    <!-- 结果卡片 -->
+    <div class="card result-section" id="resultCard">
+      <div class="card-title" style="justify-content: space-between; margin-bottom: 12px;">
+        <span>📊 筛选报告</span>
+        <span class="status-badge" id="statusBadge"></span>
+      </div>
+
+      <!-- 结论 Hero -->
+      <div id="conclusionHero"></div>
+
+      <!-- Worker Chips -->
+      <div class="worker-chips" id="workerChips"></div>
+
+      <!-- 分析报告 -->
+      <div class="analysis-report" id="analysisReport" style="display:none;"></div>
+
+      <!-- JSON 兜底 -->
+      <div id="jsonFallback" style="display:none; margin-top: 12px;">
+        <details>
+          <summary style="cursor:pointer; font-size:13px; color:#6b7280; font-weight:600;">📋 原始 JSON 数据</summary>
+          <pre id="detailsPre" style="background:#1e1b4b; color:#a5b4fc; padding:16px; border-radius:8px; font-size:12px; margin-top:8px; overflow:auto; max-height:300px; white-space:pre-wrap; word-break:break-all;"></pre>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 候选人库 Tab ==================== -->
+  <div id="tab-candidates" style="display:none;">
+    <div class="card">
+      <div class="card-title" style="justify-content: space-between;">
+        <span>💼 候选人库</span>
+        <button class="btn btn-sm btn-primary" onclick="refreshCandidates()" style="width:auto;">🔄 刷新</button>
+      </div>
+
+      <!-- 统计卡片 -->
+      <div class="stats-grid" id="candidateStats"></div>
+
+      <!-- 筛选栏 -->
+      <div class="filter-bar">
+        <select id="filterJob" onchange="refreshCandidates()">
+          <option value="">全部岗位</option>
+        </select>
+        <select id="filterStatus" onchange="refreshCandidates()">
+          <option value="">全部状态</option>
+          <option value="通过">✅ 通过</option>
+          <option value="待定">⚡ 待定</option>
+          <option value="不匹配">❌ 不匹配</option>
+        </select>
+        <span style="font-size:12px; color:var(--text-secondary);" id="candidateCount"></span>
+      </div>
+
+      <!-- 数据表格 -->
+      <div style="overflow-x:auto;">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>姓名</th>
+              <th>性别</th>
+              <th>邮箱</th>
+              <th>电话</th>
+              <th>岗位</th>
+              <th>评分</th>
+              <th>状态</th>
+              <th>时间</th>
+              <th style="text-align:center;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="candidateTableBody">
+            <tr><td colspan="10"><div class="empty-state"><p>加载中...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 分页 -->
+      <div class="pagination" id="candidatePagination"></div>
+    </div>
+  </div>
+
+  <!-- ==================== 历史记录 Tab ==================== -->
+  <div id="tab-history" style="display:none;">
+    <div class="card">
+      <div class="card-title">📊 筛选历史</div>
+      <div id="historyContent">
+        <div class="empty-state">
+          <p>暂无记录</p>
+        </div>
+      </div>
+      <div style="margin-top: 14px; text-align: right;">
+        <button class="btn btn-sm btn-primary" onclick="refreshHistory()">🔄 刷新</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Harness Tab ==================== -->
+  <div id="tab-harness" style="display:none;">
+    <div class="card">
+      <div class="card-title">🧪 自动化评测</div>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">
+        运行 20 个标注用例，覆盖强匹配、弱匹配、不匹配、红旗简历等多类场景，4 维评分引擎自动评估系统质量。
+      </p>
+      <button class="btn btn-primary" id="harnessBtn" onclick="runHarness()">
+        🚀 运行评测
+      </button>
+      <div id="harnessResult" style="margin-top:20px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API_BASE = 'http://localhost:9000';
+
+// ===== Tab =====
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => {
+    const map = {screen:'筛选',candidates:'候选人',history:'历史',harness:'评测'};
+    if (t.textContent.includes(map[name])) t.classList.add('active');
+  });
+  ['screen','candidates','history','harness'].forEach(n => {
+    document.getElementById('tab-' + n).style.display = n === name ? 'block' : 'none';
+  });
+  if (name === 'candidates') { refreshCandidates(); loadJobs(); }
+  if (name === 'history') refreshHistory();
+}
+
+// ===== 文件上传 =====
+let selectedFile = null;
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!file.name.endsWith('.pdf')) { alert('仅支持 PDF 格式'); return; }
+  selectedFile = file;
+  document.getElementById('fileName').textContent = '✓ 已选择：' + file.name;
+  document.getElementById('fileName').style.display = 'block';
+  document.querySelector('#uploadZone svg').style.color = '#4f46e5';
+  document.querySelector('#uploadZone p').textContent = '点击重新选择';
+}
+
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.endsWith('.pdf')) {
+    selectedFile = file;
+    document.getElementById('fileName').textContent = '✓ 已选择：' + file.name;
+    document.getElementById('fileName').style.display = 'block';
+    document.querySelector('#uploadZone svg').style.color = '#4f46e5';
+    document.querySelector('#uploadZone p').textContent = '点击重新选择';
+  }
+});
+
+// ===== 提交 =====
+async function submitScreen() {
+  const jdText = document.getElementById('jdText').value.trim();
+  const resumeText = document.getElementById('resumeText').value.trim();
+
+  if (!jdText) { alert('请填写职位描述 (JD)'); return; }
+  if (!resumeText && !selectedFile) { alert('请粘贴简历文本或上传 PDF 文件'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 提交中...';
+
+  let taskId;
+  try {
+    if (selectedFile && !resumeText) {
+      const fd = new FormData();
+      fd.append('file', selectedFile);
+      fd.append('jd_text', jdText);
+      const resp = await fetch(API_BASE + '/api/screen/pdf', { method: 'POST', body: fd });
+      const data = await resp.json();
+      taskId = data.task_id;
+    } else {
+      const resp = await fetch(API_BASE + '/api/screen/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jd_text: jdText, resume_text: resumeText })
+      });
+      const data = await resp.json();
+      taskId = data.task_id;
+    }
+
+    btn.innerHTML = '<span class="spinner"></span> 分析中...';
+    document.getElementById('resultCard').classList.add('show');
+    setStatus('running', 'RUNNING');
+    pollResult(taskId);
+  } catch (e) {
+    alert('请求失败：' + e.message);
+    btn.disabled = false;
+    btn.innerHTML = '🔍 开始智能筛选';
+  }
+}
+
+// ===== 轮询 =====
+async function pollResult(taskId, count = 0) {
+  try {
+    const resp = await fetch(API_BASE + '/api/screen/' + taskId);
+    const data = await resp.json();
+
+    if (data.status === 'pending' || data.status === 'running' || data.status === 'parsing') {
+      if (count > 45) { showError('任务超时，请稍后查询'); return; }
+      setStatus(data.status, data.status.toUpperCase());
+      setTimeout(() => pollResult(taskId, count + 1), 2000);
+      return;
+    }
+
+    if (data.status === 'failed') { showError(data.error || '筛选失败'); return; }
+
+    displayResult(data);
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').innerHTML = '🔍 开始智能筛选';
+  } catch (e) {
+    showError('查询失败：' + e.message);
+  }
+}
+
+function setStatus(cls, text) {
+  document.getElementById('statusBadge').textContent = text;
+  document.getElementById('statusBadge').className = 'status-badge status-' + cls;
+}
+
+function showError(msg) {
+  setStatus('failed', 'FAILED');
+  document.getElementById('conclusionHero').innerHTML = `<div class="conclusion-hero bg-reject"><div class="badge">错误</div><div class="meta">${msg}</div></div>`;
+  document.getElementById('workerChips').innerHTML = '';
+  document.getElementById('analysisReport').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').innerHTML = '🔍 开始智能筛选';
+}
+
+// ===== 显示结果 =====
+function displayResult(data) {
+  const result = data.result || {};
+  const details = result.details || result;
+  const conclusion = result.conclusion || details.conclusion || '未知';
+  const workers = result.activated_workers || [];
+  const reasoning = result.reasoning || details.reasoning || '';
+
+  setStatus('done', 'DONE');
+
+  // --- 结论 Hero ---
+  const isInterview = conclusion.includes('面试') || conclusion.includes('建议');
+  const isReject = conclusion.includes('不匹配') || conclusion.includes('拒绝');
+  const isPending = conclusion.includes('待定') || conclusion.includes('复核');
+  let heroClass = 'bg-pending', colorStyle = '';
+  if (isInterview) { heroClass = 'bg-interview'; colorStyle = ''; }
+  else if (isReject) { heroClass = 'bg-reject'; colorStyle = ''; }
+
+  document.getElementById('conclusionHero').innerHTML = `
+    <div class="conclusion-hero ${heroClass}">
+      <div class="badge">${conclusion}</div>
+      <div class="meta">
+        <strong>${workers.length}</strong> 个 Agent 参与评估
+        ${reasoning ? '<br>' + escapeHtml(reasoning) : ''}
+      </div>
+    </div>`;
+
+  // --- Worker Chips ---
+  const workerNames = {skill:'🔧 技能匹配', experience:'⭐ 经历评分', risk:'⚠️ 风险检测'};
+  document.getElementById('workerChips').innerHTML = workers.map(w =>
+    `<span class="worker-chip w-${w}">${workerNames[w] || w}</span>`
+  ).join('');
+
+  // --- 分析报告 ---
+  renderAnalysis(details);
+
+  // --- JSON 兜底 ---
+  document.getElementById('detailsPre').textContent = JSON.stringify({conclusion, details, workers}, null, 2);
+}
+
+// ===== 渲染分析文本 =====
+function renderAnalysis(details) {
+  const reportEl = document.getElementById('analysisReport');
+
+  // 按 Agent 分开显示
+  let html = '';
+
+  const order = ['skill', 'experience', 'risk'];
+  order.forEach(key => {
+    const val = details[key];
+    if (!val) return;
+
+    const icons = {skill:'🔧', experience:'⭐', risk:'⚠️'};
+    const names = {skill:'技能匹配', experience:'经历评分', risk:'风险检测'};
+
+    let content = val;
+    // 尝试解析 JSON
+    try {
+      const parsed = JSON.parse(val);
+      content = formatAgentResult(key, parsed);
+    } catch(e) {}
+
+    html += `<div style="margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #e8ecf3;">`;
+    html += `<div style="font-weight:700; font-size:15px; color:#1e1b4b; margin-bottom:10px;">${icons[key]} ${names[key]}</div>`;
+    html += `<div style="font-size:13px; line-height:1.7; color:#4b5563; white-space:pre-wrap;">${escapeHtml(content)}</div>`;
+    html += `</div>`;
+  });
+
+  if (html) {
+    reportEl.innerHTML = html;
+  } else {
+    reportEl.innerHTML = `<div style="color:#9ca3af;">暂无详细分析数据</div>`;
+  }
+  reportEl.style.display = 'block';
+}
+
+function formatAgentResult(key, data) {
+  switch(key) {
+    case 'skill':
+      return `匹配技能: ${(data.matched_skills||[]).join(', ') || '无'}\n缺失技能: ${(data.missing_skills||[]).join(', ') || '无'}\n匹配度: ${data.score || data.match_rate || 'N/A'}\n\n建议: ${(data.suggestion||'')}${(data.analysis||'')}`;
+    case 'experience':
+      return `项目评分: ${data.project_score ?? 'N/A'}\n实习评分: ${data.internship_score ?? 'N/A'}\n亮点: ${(data.strengths||[]).join('; ') || '无'}\n不足: ${(data.weaknesses||[]).join('; ') || '无'}\n总结: ${data.brief || ''}`;
+    case 'risk':
+      const flags = data.flags || [];
+      return `风险等级: ${data.severity || 'low'}\n风险数量: ${data.count || 0}\n${flags.map(f => `• ${f.rule_id} ${f.name}: ${f.detail}`).join('\n') || '未检测到风险'}`;
+    default:
+      return typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ===== 历史记录 =====
+async function refreshHistory() {
+  try {
+    const resp = await fetch(API_BASE + '/api/history?page=1&limit=50');
+    const data = await resp.json();
+    const content = document.getElementById('historyContent');
+
+    if (!data.items || data.items.length === 0) {
+      content.innerHTML = '<div class="empty-state"><p>暂无记录</p></div>';
+      return;
+    }
+
+    let html = '<table class="history-table"><thead><tr><th>任务 ID</th><th>文件名</th><th>状态</th><th style="text-align:right;">操作</th></tr></thead><tbody>';
+    data.items.forEach(item => {
+      html += `<tr>
+        <td style="font-family:monospace;font-size:12px;color:#6b7280;">${item.task_id.substring(0, 8)}...</td>
+        <td>${item.filename || '文本提交'}</td>
+        <td><span class="status-badge status-${item.status}">${item.status}</span></td>
+        <td style="text-align:right;"><button class="btn btn-sm btn-primary" onclick="loadTask('${item.task_id}')">查看</button></td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    content.innerHTML = html;
+  } catch (e) {
+    document.getElementById('historyContent').innerHTML = '<div class="empty-state"><p>加载失败：' + e.message + '</p></div>';
+  }
+}
+
+async function loadTask(taskId) {
+  switchTab('screen');
+  const resp = await fetch(API_BASE + '/api/screen/' + taskId);
+  const data = await resp.json();
+  if (data.status === 'done') {
+    document.getElementById('resultCard').classList.add('show');
+    displayResult(data);
+  } else {
+    document.getElementById('resultCard').classList.add('show');
+    setStatus(data.status, data.status.toUpperCase());
+    document.getElementById('conclusionHero').innerHTML = '';
+    document.getElementById('workerChips').innerHTML = '';
+    document.getElementById('analysisReport').style.display = 'none';
+    if (data.status === 'running' || data.status === 'pending') pollResult(taskId);
+  }
+}
+
+// ===== 候选人库 =====
+let candidatePage = 1;
+
+async function loadJobs() {
+  try {
+    const resp = await fetch(API_BASE + '/api/jd');
+    const jds = await resp.json();
+    const sel = document.getElementById('filterJob');
+    sel.innerHTML = '<option value="">全部岗位</option>' +
+      jds.map(j => `<option value="${j.id}">${j.title}</option>`).join('');
+  } catch(e) {}
+}
+
+async function refreshCandidates() {
+  const jobId = document.getElementById('filterJob').value;
+  const status = document.getElementById('filterStatus').value;
+  let url = `${API_BASE}/api/candidates?page=${candidatePage}&limit=20`;
+  if (jobId) url += `&job_id=${jobId}`;
+  if (status) url += `&status=${status}`;
+
+  try {
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    // 统计
+    const statsResp = await fetch(`${API_BASE}/api/stats${jobId ? '?job_id='+jobId : ''}`);
+    const stats = await statsResp.json();
+    document.getElementById('candidateStats').innerHTML = `
+      <div class="stat-card"><div class="stat-value">${stats.total}</div><div class="stat-label">总人数</div></div>
+      <div class="stat-card stat-success"><div class="stat-value">${stats.pass||stats['通过']||0}</div><div class="stat-label">通过</div></div>
+      <div class="stat-card" style="--c:#d97706"><div class="stat-value" style="color:#d97706">${stats.pending||stats['待定']||0}</div><div class="stat-label">待定</div></div>
+      <div class="stat-card stat-danger"><div class="stat-value">${stats.reject||stats['不匹配']||0}</div><div class="stat-label">不匹配</div></div>`;
+
+    document.getElementById('candidateCount').textContent = `共 ${data.total} 条记录`;
+
+    // 表格
+    const tbody = document.getElementById('candidateTableBody');
+    if (!data.items || data.items.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><p>暂无候选人数据</p></div></td></tr>';
+      document.getElementById('candidatePagination').innerHTML = '';
+      return;
+    }
+
+    tbody.innerHTML = data.items.map(c => {
+      const statClass = c.status === '通过' ? 's-pass' : c.status === '待定' ? 's-pending' : 's-reject';
+      const time = c.created_at ? c.created_at.substring(0, 10) : '-';
+      return `<tr>
+        <td style="font-size:12px;color:#9ca3af;">${c.id}</td>
+        <td style="font-weight:600;">${c.name}</td>
+        <td>${c.gender || '-'}</td>
+        <td>${c.email || '-'}</td>
+        <td>${c.phone || '-'}</td>
+        <td>${c.job_title || '-'}</td>
+        <td>${c.score != null ? c.score.toFixed(2) : '-'}</td>
+        <td><span class="status-cell ${statClass}">${c.status || '-'}</span></td>
+        <td style="font-size:12px;color:#9ca3af;">${time}</td>
+        <td style="text-align:center;">
+          <select onchange="changeStatus(${c.id}, this.value)" style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid #d1d5db;">
+            <option value="">改状态</option>
+            <option value="通过">✅ 通过</option>
+            <option value="待定">⚡ 待定</option>
+            <option value="不匹配">❌ 不匹配</option>
+          </select>
+        </td>
+      </tr>`;
+    }).join('');
+
+    // 分页
+    const totalPages = Math.ceil(data.total / 20);
+    let pageHtml = '';
+    for (let i = 1; i <= totalPages && i <= 10; i++) {
+      pageHtml += `<button class="${i === candidatePage ? 'active' : ''}" onclick="candidatePage=${i};refreshCandidates()">${i}</button>`;
+    }
+    document.getElementById('candidatePagination').innerHTML = pageHtml;
+  } catch (e) {
+    document.getElementById('candidateTableBody').innerHTML = '<tr><td colspan="10"><div class="empty-state"><p>加载失败：' + e.message + '</p></div></td></tr>';
+  }
+}
+
+async function changeStatus(id, newStatus) {
+  if (!newStatus) return;
+  try {
+    await fetch(`${API_BASE}/api/candidates/${id}/status`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status: newStatus})
+    });
+    refreshCandidates();
+  } catch(e) { alert('更新失败: ' + e.message); }
+}
+
+// ===== Harness =====
+async function runHarness() {
+  const btn = document.getElementById('harnessBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 评测运行中...';
+
+  try {
+    const resp = await fetch(API_BASE + '/api/harness/run', { method: 'POST' });
+    const data = await resp.json();
+    const s = data.summary || data;
+
+    let html = '<div class="stats-grid">';
+    html += `<div class="stat-card"><div class="stat-value">${s.total}</div><div class="stat-label">总用例</div></div>`;
+    html += `<div class="stat-card stat-success"><div class="stat-value">${s.passed}</div><div class="stat-label">通过</div></div>`;
+    html += `<div class="stat-card stat-danger"><div class="stat-value">${s.failed}</div><div class="stat-label">未通过</div></div>`;
+    html += `<div class="stat-card"><div class="stat-value">${s.avg_score}</div><div class="stat-label">均分</div></div>`;
+    html += '</div>';
+
+    if (s.details && s.details.length > 0) {
+      html += '<table class="history-table"><thead><tr><th>用例</th><th>期望</th><th>实际</th><th>得分</th><th style="text-align:center;">结果</th></tr></thead><tbody>';
+      s.details.forEach(d => {
+        const passed = d.passed !== undefined ? d.passed : d.score >= 0.7;
+        html += `<tr>
+          <td style="font-weight:500;">${d.case_id}</td>
+          <td>${d.expected}</td>
+          <td>${d.actual}</td>
+          <td>${d.score}</td>
+          <td style="text-align:center;"><span class="status-dot ${passed?'dot-green':'dot-red'}"></span>${passed ? '通过' : '未通过'}</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+    }
+
+    document.getElementById('harnessResult').innerHTML = html;
+  } catch (e) {
+    document.getElementById('harnessResult').innerHTML = '<div class="empty-state"><p>评测失败：' + e.message + '</p></div>';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 运行评测';
+  }
+}
+</script>
+</body>
+</html>

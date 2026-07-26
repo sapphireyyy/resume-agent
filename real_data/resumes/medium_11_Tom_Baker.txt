@@ -1,0 +1,14 @@
+Name: Tom Baker
+Email: tom.baker@email.com
+Summary: Junior Python Developer with 1 year experience in web scraping and automation scripts. Learning FastAPI and Docker. Looking to transition into backend development.
+
+Skills: Python, basic FastAPI, basic SQL, Git, Linux basics, HTML, CSS
+
+Experience:
+- Junior Developer @ SmallCo (2023-Present): Wrote Python scripts for data extraction. Built simple Flask APIs for internal tools. Maintained legacy PHP codebase.
+
+Education: B.S. Information Technology, State University (2023)
+
+Projects:
+- Weather API: Simple FastAPI app returning weather data
+- Web Scraper: Python script collecting product prices from e-commerce sites

@@ -1,0 +1,15 @@
+Name: Jordan Lee
+Email: jordan.lee@email.com
+Summary: Full-Stack Developer with 4 years building SaaS products. Proficient in React/Next.js frontend and Python/FastAPI backend. Experienced in AWS cloud architecture and CI/CD pipelines.
+
+Skills: Python, FastAPI, JavaScript, TypeScript, React, Next.js, Node.js, PostgreSQL, MongoDB, Redis, AWS, Docker, Kubernetes, Terraform, CI/CD, GraphQL, REST, WebSocket, Nginx, Git
+
+Experience:
+- Full-Stack Engineer @ SaaSFlow (2021-Present): Built and maintained B2B SaaS platform with 500+ enterprise clients. Architected event-driven backend with FastAPI and Redis pub/sub. Led migration from monolith to micro-frontend architecture.
+- Software Developer @ WebPro (2019-2021): Developed React dashboard for analytics platform. Built REST APIs with FastAPI. Implemented real-time notification system with WebSocket.
+
+Education: B.S. Computer Science, Georgia Tech (2019)
+
+Projects:
+- E-Commerce Platform: Full-stack marketplace with real-time bidding (3K users)
+- DevOps Toolkit: CLI tool automating AWS infrastructure setup (500+ GitHub stars)
