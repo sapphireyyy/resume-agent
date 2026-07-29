@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session
 from logger_config import setup_logger
 logger = setup_logger("backend.main")
 
-from backend.models import SessionLocal, JobDescription, Candidate
+from backend.models import SessionLocal, JobDescription, Candidate, engine
 
 app = FastAPI(title="resume-agent", version="2.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -197,7 +197,36 @@ def index():
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    checks = {}
+
+    if os.getenv("DEEPSEEK_API_KEY"):
+        checks["model"] = {"status": "ok"}
+    else:
+        checks["model"] = {"status": "error", "error": "DEEPSEEK_API_KEY 未设置"}
+
+    try:
+        with engine.connect() as connection:
+            connection.exec_driver_sql("SELECT 1")
+        checks["database"] = {"status": "ok"}
+    except Exception as exc:
+        logger.error("数据库启动检查失败: %s", exc)
+        checks["database"] = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
+
+    pdf_providers = []
+    try:
+        import pypdf  # noqa: F401
+        pdf_providers.append("pypdf")
+    except ImportError:
+        pass
+    if os.getenv("MINERU_API_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}:
+        pdf_providers.append("mineru-precision-api")
+    if pdf_providers:
+        checks["pdf"] = {"status": "ok", "providers": pdf_providers}
+    else:
+        checks["pdf"] = {"status": "error", "error": "未启用 MinerU API 且未找到 pypdf"}
+
+    ready = all(check["status"] == "ok" for check in checks.values())
+    return {"status": "ok" if ready else "degraded", "ready": ready, "checks": checks}
 
 
 # ==================== Background Tasks ====================
@@ -209,8 +238,10 @@ def _run_screening(task_id: str, jd: str, resume: str):
         t0 = time.time()
         result = screen_resume(jd, resume)
         elapsed = round(time.time() - t0, 1)
+        result_status = result.get("details", {}).get("reliability", {}).get("status")
+        task_status = "degraded" if result_status == "degraded" else "done"
         logger.info("screening done task_id=%s conclusion=%s time=%ss", task_id[:8], result.get("conclusion"), elapsed)
-        _task_status[task_id] = {"status": "done", "result": result, "resume_text": resume}
+        _task_status[task_id] = {"status": task_status, "result": result, "resume_text": resume}
     except Exception as e:
         logger.error("screening failed task_id=%s: %s", task_id[:8], e, exc_info=True)
         _task_status[task_id] = {"status": "failed", "error": str(e)}
@@ -230,10 +261,12 @@ def _run_pdf_screening(task_id: str, jd: str, pdf_bytes: bytes, filename: str, m
         _task_status[task_id]["status"] = "running"
         from screening_engine.supervisor_graph import screen_resume
         t0 = time.time()
-        result = screen_resume(jd, resume_text)
+        result = screen_resume(jd, resume_text, parse_result.get("sections"))
         elapsed = round(time.time() - t0, 1)
+        result_status = result.get("details", {}).get("reliability", {}).get("status")
+        task_status = "degraded" if result_status == "degraded" else "done"
 
-        _task_status[task_id] = {"status": "done", "result": result, "resume_text": resume_text}
+        _task_status[task_id] = {"status": task_status, "result": result, "resume_text": resume_text}
         _save_candidate(meta, resume_text, result, elapsed, jd)
     except Exception as e:
         logger.error("PDF screening failed task_id=%s: %s", task_id[:8], e, exc_info=True)
@@ -280,4 +313,4 @@ def _save_candidate(meta: dict, resume_text: str, result: dict, elapsed: float, 
 if __name__ == "__main__":
     import uvicorn
     logger.info("========== resume-agent starting ==========")
-    uvicorn.run(app, host="0.0.0.0", port=9000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

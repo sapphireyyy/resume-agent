@@ -47,12 +47,26 @@ python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
 
-# 3. 配置 API Key
+# 3. 配置环境变量
 copy .env.example .env
-# 编辑 .env，填入 DEEPSEEK_API_KEY
+# MinerU 精准解析 API 需要在 .env 中配置 MINERU_API_TOKEN；请勿提交真实 Token。
+# PDF 流程会调用 /api/v4/file-urls/batch，上传后轮询 /api/v4/extract-results/batch/{batch_id}。
+# .env 必须放在项目根目录，启动时由 backend/main.py 自动加载
+# 必填：填入 DEEPSEEK_API_KEY（供 deepseek-chat 使用）
+# 可选：MYSQL_URL；不填则使用项目根目录的 screener.db（SQLite）
+# 可选：GITHUB_TOKEN；仅 GitHub Enrich Skill 读取并用于 GitHub API 鉴权
+# 可选：LOG_DIR；日志目录相对项目根目录解析，默认使用 logs；目录不可写时自动降级为控制台日志
+# 可选：LLM_TIMEOUT_SECONDS=45；单次模型调用超时
+# 可选：LLM_MAX_RETRIES=2、LLM_RETRY_BACKOFF_SECONDS=1；失败时最多重试 2 次并指数退避
+# 可选：LLM_RATE_LIMIT_PER_MINUTE=30、LLM_MIN_INTERVAL_SECONDS=0.2；共享限流策略
+# 可选：LLM_RATE_LIMIT_WAIT_SECONDS=10；令牌等待超时后返回 degraded/rate_limited，不伪造评分
 
 # 4. 启动
 python backend/main.py
+# 浏览器打开 http://localhost:8000
+
+# Docker Compose 启动
+docker compose up --build
 # 浏览器打开 http://localhost:8000
 
 # 5. 或直接用前端
@@ -99,7 +113,13 @@ resume-screener/
 | `/api/screen/{task_id}` | GET | 查询任务状态与结果 |
 | `/api/history` | GET | 历史记录（分页） |
 | `/api/harness/run` | POST | 一键运行 Harness 评测 |
-| `/health` | GET | 健康检查 |
+| `/health` | GET | 启动依赖检查（模型 Key、数据库、PDF 解析器） |
+
+`/health` 在依赖未就绪时仍返回 `200`，但会返回 `status: "degraded"`、`ready: false` 和具体失败项，便于定位配置问题。
+
+LLM 调用失败时，Worker 会记录 `timeout`、`rate_limited` 或 `failed` 状态；Supervisor 将最终结论降级为“待定”，并在 `result.details.reliability` 中保留失败 Worker、重试次数和当前策略。后台任务状态会返回 `degraded`，便于调用方区分“完成”与“需要人工复核”。
+
+PDF 简历会保留完整文本，并按 `basics`、`skills`、`work`、`education`、`projects`、`certifications` 等章节传给 Parser；不再使用固定的 8000 字符截断。下游 Agent 只接收相关章节和结构化字段，避免重复发送整份简历。
 
 ## 测试
 

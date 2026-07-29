@@ -47,8 +47,60 @@ check("skill stacking detected", len(r5["flags"]) > 0)
 
 print("  parse_resume:")
 from skills.parse_resume.parser import ResumeParser
+from skills.parse_resume.sections import segment_resume
 parser = ResumeParser()
 check("parser loaded", parser is not None)
+section_sample = (
+    "Professional Experience\nWORK_MARKER\n"
+    + "A" * 8100
+    + "\nEducation\nEDUCATION_TAIL_MARKER\n"
+    + "Projects\nPROJECT_TAIL_MARKER"
+)
+parser._parse_with_mineru_api = lambda *_: section_sample
+parsed_pdf = parser.parse(b"mock-pdf")
+check("MinerU API parser used", parsed_pdf["source"] == "mineru_api")
+check("long PDF text preserved", len(parsed_pdf["text"]) == len(section_sample))
+check("education section preserved", "EDUCATION_TAIL_MARKER" in parsed_pdf["sections"]["education"])
+check("project section preserved", "PROJECT_TAIL_MARKER" in parsed_pdf["sections"]["projects"])
+
+print("  mineru precision API flow:")
+import io
+import zipfile
+from unittest.mock import patch
+import skills.parse_resume.parser as parser_module
+
+
+class FakeResponse:
+    def __init__(self, payload=None, content=b""):
+        self._payload = payload
+        self.content = content
+
+    def raise_for_status(self):
+        return None
+
+    def json(self):
+        return self._payload
+
+
+zip_buffer = io.BytesIO()
+with zipfile.ZipFile(zip_buffer, "w") as archive:
+    archive.writestr("resume/full.md", "MinerU precision markdown")
+api_parser = ResumeParser()
+api_parser.poll_interval = 0
+api_parser.poll_timeout = 1
+poll_responses = [
+    FakeResponse({"code": 0, "data": {"extract_result": [{"file_name": "resume.pdf", "state": "running"}]}}),
+    FakeResponse({"code": 0, "data": {"extract_result": [{"file_name": "resume.pdf", "state": "done", "full_zip_url": "https://cdn/result.zip"}]}}),
+    FakeResponse(content=zip_buffer.getvalue()),
+]
+with patch.object(parser_module.requests, "post", return_value=FakeResponse({
+    "code": 0,
+    "data": {"batch_id": "batch-1", "file_urls": ["https://oss/upload"]},
+})), patch.object(parser_module.requests, "put", return_value=FakeResponse()), patch.object(
+    parser_module.requests, "get", side_effect=poll_responses
+):
+    api_text = api_parser._parse_with_mineru_api(b"pdf", "resume.pdf")
+check("precision API downloads full.md", api_text == "MinerU precision markdown")
 
 # === 2. Agents (lazy init) ===
 print("\n[2] Agent Module (lazy init, no API key)")
